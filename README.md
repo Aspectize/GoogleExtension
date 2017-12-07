@@ -18,5 +18,14 @@ Add JQueryRateIt in the Directories list :
 app.Directories = "GoogleExtension";
 ```
 
-## 3 - Add js into tour ashx file
+## 3 - Include js into your ashx file
+
+In your application.htm.ashx file, add the following lines (choose the different library you need from Google)
+```javascript
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load('maps','3',{'other_params':'libraries=places'});
+    google.load('visualization', '1.0', {'packages':['annotatedtimeline', 'corechart', 'table', 'geochart', 'orgchart']});
+</script>
+```
 
