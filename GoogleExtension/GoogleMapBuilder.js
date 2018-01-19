@@ -451,7 +451,26 @@ Global.GoogleMapControlBuilder = {
                         var newLongitude = marker.getPosition().lng();
                         Aspectize.UiExtensions.ChangeProperty(controlMarker, 'Longitude', newLongitude);
                         Aspectize.UiExtensions.ChangeProperty(controlMarker, 'Latitude', newLatitude);
-                        Aspectize.UiExtensions.Notify(controlMarker, 'OnDragEnd', { 'marker': marker, 'item': item });
+
+                        geocoder.geocode({ 'location': marker.getPosition() }, function (results, status) {
+                            var adressComponent = { Latitude: marker.getPosition().lat(), Longitude: marker.getPosition().lng(), FormatAdress: '', country: '', locality: '', postal_code: '', route: '', street_number: '' };
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                if (results[0]) {
+                                    adressComponent['FormatAdress'] = results[0].formatted_address;
+                                    for (var i = 0; i < results[0].address_components.length; i++) {
+                                        var address_component = results[0].address_components[i];
+                                        var infoType = address_component.types[0];
+                                        if (infoType in adressComponent) {
+                                            adressComponent[infoType] = address_component.long_name;
+                                        }
+                                    }
+                                }
+                            }
+                            Aspectize.UiExtensions.Notify(controlMarker, 'OnDragEnd', { 'marker': marker, 'item': item, 'adressComponent': adressComponent });
+                        });
+
+
+                        //Aspectize.UiExtensions.Notify(controlMarker, 'OnDragEnd', { 'marker': marker, 'item': item });
                     });
                 }
             } else {
