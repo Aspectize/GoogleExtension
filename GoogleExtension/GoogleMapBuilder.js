@@ -437,6 +437,14 @@ Global.GoogleMapControlBuilder = {
                     Aspectize.UiExtensions.Notify(controlMarker, 'OnMarkerClick', { 'marker': marker, 'item': item, 'infoWindow': infoWindow, 'infoBubble': infoBubble });
                 });
 
+                google.maps.event.addListener(marker, 'mouseover', function () {
+                    Aspectize.UiExtensions.Notify(controlMarker, 'OnMarkerMouseOver', { 'marker': marker, 'item': item, 'infoWindow': infoWindow, 'infoBubble': infoBubble });
+                });
+
+                google.maps.event.addListener(marker, 'mouseout', function () {
+                    Aspectize.UiExtensions.Notify(controlMarker, 'OnMarkerMouseOut', { 'marker': marker, 'item': item, 'infoWindow': infoWindow, 'infoBubble': infoBubble });
+                });
+
                 if (draggable) {
                     google.maps.event.addListener(marker, 'dragstart', function () {
                         Aspectize.UiExtensions.SetCurrent(control, item.id);
