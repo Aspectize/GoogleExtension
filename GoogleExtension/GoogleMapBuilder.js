@@ -393,6 +393,7 @@ Global.GoogleMapControlBuilder = {
             var controlMarker = cellControls[0];  // une seule colonne de type GoogleMarkerPart
 
             var title = Aspectize.UiExtensions.GetProperty(controlMarker, 'Title');
+            var label = Aspectize.UiExtensions.GetProperty(controlMarker, 'Label');
             var latitude = Aspectize.UiExtensions.GetProperty(controlMarker, 'Latitude');
             var longitude = Aspectize.UiExtensions.GetProperty(controlMarker, 'Longitude');
 
@@ -410,6 +411,7 @@ Global.GoogleMapControlBuilder = {
                 marker.setVisible(visible);
                 marker.setDraggable(draggable);
                 marker.setTitle(title);
+                marker.setLabel(label);
                 marker.infoWindowText = infoWindowText;
 
                 controlMarker.aasMarkerInfo = marker;
@@ -456,7 +458,26 @@ Global.GoogleMapControlBuilder = {
                         var newLongitude = marker.getPosition().lng();
                         Aspectize.UiExtensions.ChangeProperty(controlMarker, 'Longitude', newLongitude);
                         Aspectize.UiExtensions.ChangeProperty(controlMarker, 'Latitude', newLatitude);
-                        Aspectize.UiExtensions.Notify(controlMarker, 'OnDragEnd', { 'marker': marker, 'item': item });
+
+                        geocoder.geocode({ 'location': marker.getPosition() }, function (results, status) {
+                            var adressComponent = { Latitude: marker.getPosition().lat(), Longitude: marker.getPosition().lng(), FormatAdress: '', country: '', locality: '', postal_code: '', route: '', street_number: '' };
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                if (results[0]) {
+                                    adressComponent['FormatAdress'] = results[0].formatted_address;
+                                    for (var i = 0; i < results[0].address_components.length; i++) {
+                                        var address_component = results[0].address_components[i];
+                                        var infoType = address_component.types[0];
+                                        if (infoType in adressComponent) {
+                                            adressComponent[infoType] = address_component.long_name;
+                                        }
+                                    }
+                                }
+                            }
+                            Aspectize.UiExtensions.Notify(controlMarker, 'OnDragEnd', { 'marker': marker, 'item': item, 'adressComponent': adressComponent });
+                        });
+
+
+                        //Aspectize.UiExtensions.Notify(controlMarker, 'OnDragEnd', { 'marker': marker, 'item': item });
                     });
                 }
             } else {
@@ -540,19 +561,31 @@ Global.GoogleMapControlMarkerBuilder = {
                             parts.splice(0, parts.length);
                             urlIcon = parts.join('/') + urlIcon;
                         }
+                        var defaultIconWidth = cell.aasGetProperty('IconWidth') || 32;
+                        var defaultIconHeight = cell.aasGetProperty('IconHeight') || 32;
+                        var defaultIconOriginX = cell.aasGetProperty('IconOriginX') || 0;
+                        var defaultIconOriginY = cell.aasGetProperty('IconOriginY') || 0;
+                        var defaultIconAnchorX = cell.aasGetProperty('IconAnchorX') || 16;
+                        var defaultIconAnchorY = cell.aasGetProperty('IconAnchorY') || 32;
 
-                        var iconWidth = ('IconWidth' in arg) ? arg.IconWidth : 32;
-                        var iconHeight = ('IconHeight' in arg) ? arg.IconHeight : 32;
-                        var iconOriginX = ('IconOriginX' in arg) ? arg.IconOriginX : 0;
-                        var iconOriginY = ('IconOriginY' in arg) ? arg.IconOriginY : 0;
-                        var iconAnchorX = ('IconAnchorX' in arg) ? arg.IconAnchorX : 16;
-                        var iconAnchorY = ('IconAnchorY' in arg) ? arg.IconAnchorY : 32;
+                        var iconWidth = ('IconWidth' in arg) ? arg.IconWidth : defaultIconWidth;
+                        var iconHeight = ('IconHeight' in arg) ? arg.IconHeight : defaultIconHeight;
+                        var iconOriginX = ('IconOriginX' in arg) ? arg.IconOriginX : defaultIconOriginX;
+                        var iconOriginY = ('IconOriginY' in arg) ? arg.IconOriginY : defaultIconOriginY;
+                        var iconAnchorX = ('IconAnchorX' in arg) ? arg.IconAnchorX : defaultIconAnchorX;
+                        var iconAnchorY = ('IconAnchorY' in arg) ? arg.IconAnchorY : defaultIconAnchorY;
 
-                        var image = new google.maps.MarkerImage(urlIcon,
-                            new google.maps.Size(iconWidth, iconHeight),
-                            new google.maps.Point(iconOriginX, iconOriginY),
+                        //var image = new google.maps.MarkerImage(urlIcon,
+                        //    new google.maps.Size(iconWidth, iconHeight),
+                        //    new google.maps.Point(iconOriginX, iconOriginY),
+                        //    new google.maps.Point(iconAnchorX, iconAnchorY));
 
-                            new google.maps.Point(iconAnchorX, iconAnchorY)); // The anchor for this image is the base of the flagpole.
+                        var image = {
+                            url: urlIcon,
+                            size: new google.maps.Size(iconWidth, iconHeight),
+                            origin: new google.maps.Point(iconOriginX, iconOriginY),
+                            anchor: new google.maps.Point(iconAnchorX, iconAnchorY)
+                        };
 
                         marker.setIcon(image);
                     }
