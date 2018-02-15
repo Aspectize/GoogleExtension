@@ -292,7 +292,7 @@ Global.GoogleMapControlBuilder = {
                 scrollwheel: Aspectize.UiExtensions.GetProperty(control, 'Scrollwheel'),
                 zoom: Aspectize.UiExtensions.GetProperty(control, 'Zoom'),
                 disableDefaultUI: Aspectize.UiExtensions.GetProperty(control, 'DisableDefaultUI'),
-                zoomControl: false
+                zoomControl: Aspectize.UiExtensions.GetProperty(control, 'EnableZoomControl')
             };
 
             var map = new google.maps.Map(controlMap, mapOptions);
