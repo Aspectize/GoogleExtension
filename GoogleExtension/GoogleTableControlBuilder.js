@@ -28,7 +28,7 @@ Global.GoogleTableControlBuilder = {
             google.visualization.events.addListener(table, 'select',
             function (e) {
                 var selection = table.getSelection();
-                Aspectize.UiExtensions.Notify(elem, 'OnRowClick', selection);
+                Aspectize.UiExtensions.Notify(control, 'OnRowClick', selection);
             });
         };
 
