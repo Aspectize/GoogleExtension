@@ -641,7 +641,7 @@ Aspectize.Extend("GoogleMapControl", {
 
                 var location = new google.maps.LatLng(latitude, longitude);
 
-                info.Marker = new google.maps.Marker({ position: location, map: map });
+                info.Marker = new google.maps.Marker({ position: location, map: map, optimized:false });
 
                 controlInfo.aasGoogleInfo.Markers[id] = info.Marker;
             }
@@ -965,7 +965,7 @@ Aspectize.Extend("GoogleMarkerPart", {
 
     Binding: 'ColumnBinding',
 
-    Properties: { Title:'', Label:'', Draggable:false, Visible:true, UrlIcon: '', Longitude:0, Latitude:0, InfoWindowText: '', IconWidth: 32, IconHeight:32, IconOriginX: 0, IconOriginY:0, IconAnchorX: 16, IconAnchorY:32  },
+    Properties: { Title: '', Label: '', Draggable: false, Visible: true, UrlIcon: '', Longitude: 0, Latitude: 0, InfoWindowText: '', IconWidth: 32, IconHeight: 32, IconOriginX: 0, IconOriginY: 0, IconAnchorX: 16, IconAnchorY: 32, zIndex: 0 },
     Events: ['OnPropertyChanged','OnLongitudeChanged', 'OnLatitudeChanged', 'OnUrlIconChanged', 'OnMarkerClick','OnDragBegin','OnDragEnd','OnMarkerMouseOver','OnMarkerMouseOut'],
     Init: function (control, controlInfo) {
 
@@ -1015,6 +1015,10 @@ Aspectize.Extend("GoogleMarkerPart", {
 
                 if ('Title' in arg) {
                     marker.setTitle(arg.Title);
+                }
+
+                if ('zIndex' in arg) {
+                    marker.setZIndex(arg.zIndex);
                 }
 
                 if ('Longitude' in arg || 'Latitude' in arg) {
