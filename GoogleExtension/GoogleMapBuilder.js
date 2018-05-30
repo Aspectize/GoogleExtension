@@ -619,7 +619,7 @@ Aspectize.Extend("GoogleMapControl", {
     Binding: 'GridBinding',
 
     Properties: { DefaultMarkerUrlIcon: '', DisableDoubleClickZoom: false, Scrollwheel: true, AddMarkerOnClick: false, AutoComplete: '', Zoom: 12, InitLat: 0, InitLng: 0, DisableDefaultUI: true, EnableZoomControl: false },
-    Events: ['OnMapClick', 'OnAutoComplete', 'OnIdle'],
+    Events: ['OnMapClick', 'OnAutoComplete', 'OnIdle', 'OnZoomChanged'],
 
     Init: function (control, controlInfo) {
 
@@ -780,6 +780,11 @@ Aspectize.Extend("GoogleMapControl", {
         //});
 
         //controlInfo.aasGoogleInfo.InfoBubble = infoBubble;
+
+        map.addListener('zoom_changed', function () {
+            var z = map.getZoom();
+            Aspectize.UiExtensions.ChangeProperty(control, 'Zoom', z);
+        });
 
         var addMarkerOnClick = Aspectize.UiExtensions.GetProperty(control, 'AddMarkerOnClick');
 
