@@ -618,7 +618,7 @@ Aspectize.Extend("GoogleMapControl", {
 
     Binding: 'GridBinding',
 
-    Properties: { DefaultMarkerUrlIcon: '', DisableDoubleClickZoom: false, Scrollwheel: true, AddMarkerOnClick: false, AutoComplete: '', Zoom: 12, InitLat: 0, InitLng: 0, DisableDefaultUI: true, EnableZoomControl: false },
+    Properties: { DefaultMarkerUrlIcon: '', DisableDoubleClickZoom: false, Scrollwheel: true, AddMarkerOnClick: false, AutoComplete: '', Zoom: 12, InitLat: 0, InitLng: 0, DisableDefaultUI: true, EnableZoomControl: false, CurrentLat: 0, CurrentLng: 0 },
     Events: ['OnMapClick', 'OnAutoComplete', 'OnIdle', 'OnZoomChanged'],
 
     Init: function (control, controlInfo) {
@@ -817,6 +817,14 @@ Aspectize.Extend("GoogleMapControl", {
             }
         });
 
+        google.maps.event.addListener(map, 'idle', function () {
+            Aspectize.UiExtensions.Notify(control, 'OnIdle', { 'map': map });
+            var NewMapCenter = map.getCenter();
+            var latitude = NewMapCenter.lat();
+            var longitude = NewMapCenter.lng();
+            Aspectize.UiExtensions.ChangeProperty(control, 'CurrentLat', latitude);
+            Aspectize.UiExtensions.ChangeProperty(control, 'CurrentLng', longitude);
+        });
 
         controlInfo.BeforeRender = function (control) {
             hideOverlays();
@@ -868,10 +876,10 @@ Aspectize.Extend("GoogleMapControl", {
                 }
 
                 //marker.setMap(map);
-
-                google.maps.event.addListener(map, 'idle', function () {
-                    Aspectize.UiExtensions.Notify(control, 'OnIdle', { 'map': map });
-                });
+                //map.addListener('idle', function () {
+                //google.maps.event.addListener(map, 'idle', function () {
+                //    Aspectize.UiExtensions.Notify(control, 'OnIdle', { 'map': map });
+                //});
 
                 google.maps.event.addListener(marker, 'click', function () {
                     Aspectize.UiExtensions.SetCurrent(control, item.id);
