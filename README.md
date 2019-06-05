@@ -20,13 +20,9 @@ app.Directories = "GoogleExtension";
 
 ## 3 - Include js into your ashx file
 
-In your application.htm.ashx file, add the following lines (choose the different library you need from Google)
+In your application.htm.ashx file, add the following lines; choose the different library you need from Google and insert your API Key you got from Google
 ```javascript
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-    google.load('maps','3',{'other_params':'libraries=places'});
-    google.load('visualization', '1.0', {'packages':['annotatedtimeline', 'corechart', 'table', 'geochart', 'orgchart']});
-</script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&region=fr&key=YOUR_API_KEY"></script>
 ```
 
 ## 4 - Usage
