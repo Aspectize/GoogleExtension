@@ -1,8 +1,8 @@
 ﻿/// <reference path="S:\Delivery\Aspectize.core\AspectizeIntellisenseLibrary.js" />
 
 Aspectize.Extend("GoogleMapPlaceInput", {
-    Properties: { Longitude: null, Latitude: null, FullAdress: '', StreetNumber: '', Route: '', City: '', Zip: '', Country: '' },
-    Events: ['OnLongitudeChanged', 'OnLatitudeChanged', 'OnFullAdressChanged', 'OnStreetNumberChanged', 'OnRouteChanged', 'OnCityChanged', 'OnZipChanged', 'OnCountryChanged'],
+    Properties: { Longitude: null, Latitude: null, FullAdress: '', Name:'', StreetNumber: '', Route: '', City: '', Zip: '', Country: '' },
+    Events: ['OnLongitudeChanged', 'OnLatitudeChanged', 'OnFullAdressChanged', 'OnNameChanged', 'OnStreetNumberChanged', 'OnRouteChanged', 'OnCityChanged', 'OnZipChanged', 'OnCountryChanged'],
     Init: function (elem) {
         var autocomplete = new google.maps.places.Autocomplete(elem);
 
@@ -44,7 +44,7 @@ Aspectize.Extend("GoogleMapPlaceInput", {
                     }
                 }
             }
-
+            Aspectize.UiExtensions.ChangeProperty(elem, 'Name', place.name);
             Aspectize.UiExtensions.ChangeProperty(elem, 'FullAdress', place.formatted_address);
         });
 
