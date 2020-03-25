@@ -136,6 +136,27 @@ Global.GoogleMapService = {
         }
     },
 
+    LatLonFromAddress: function (address, cb) {
+        var geocoder = new google.maps.Geocoder();
+        if (geocoder) {
+
+            geocoder.geocode({
+                address: address
+
+            }, function (r, s) {
+
+                if (s === google.maps.GeocoderStatus.OK) {
+
+                    var lat = r[0].geometry.location.lat();
+                    var lng = r[0].geometry.location.lng();
+
+                    cb(lat, lng);
+                }
+            });
+        }
+
+    },
+
     GeoCode: function (controlMap, latitude, longitude, autoCompleteControl) {
         var googleInfo = getGoogleInfo(controlMap);
         if (googleInfo) {
@@ -641,7 +662,7 @@ Aspectize.Extend("GoogleMapControl", {
 
                 var location = new google.maps.LatLng(latitude, longitude);
 
-                info.Marker = new google.maps.Marker({ position: location, map: map, optimized:false });
+                info.Marker = new google.maps.Marker({ position: location, map: map, optimized: false });
 
                 controlInfo.aasGoogleInfo.Markers[id] = info.Marker;
             }
@@ -979,7 +1000,7 @@ Aspectize.Extend("GoogleMarkerPart", {
     Binding: 'ColumnBinding',
 
     Properties: { Title: '', Label: '', Draggable: false, Visible: true, UrlIcon: '', Longitude: 0, Latitude: 0, InfoWindowText: '', IconWidth: 32, IconHeight: 32, IconOriginX: 0, IconOriginY: 0, IconAnchorX: 16, IconAnchorY: 32, zIndex: 0 },
-    Events: ['OnPropertyChanged','OnLongitudeChanged', 'OnLatitudeChanged', 'OnUrlIconChanged', 'OnMarkerClick','OnDragBegin','OnDragEnd','OnMarkerMouseOver','OnMarkerMouseOut'],
+    Events: ['OnPropertyChanged', 'OnLongitudeChanged', 'OnLatitudeChanged', 'OnUrlIconChanged', 'OnMarkerClick', 'OnDragBegin', 'OnDragEnd', 'OnMarkerMouseOver', 'OnMarkerMouseOut'],
     Init: function (control, controlInfo) {
 
         Aspectize.UiExtensions.AddMergedPropertyChangeObserver(control, function (sender, arg) {
