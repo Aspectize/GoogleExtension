@@ -8,5 +8,9 @@
     <div aas-control="name:'GoogleLineChart', binding:'GridBinding', properties : {Title:'' },  events:['OnRowClick'], templateBuilders:['GoogleTableBuilder', 'GoogleLineChartBuilder'], parts:['GoogleLineChartColumn']"></div>
     <div aas-control="name:'GoogleLineChartColumn', isControlPart:true, properties : {Value:null }, events:['OnValueChanged', 'OnPropertyChanged'], templateBuilders:['GoogleColumnBuilder']"></div>
 
+
+    <div aas-control="name:'GoogleBarChart', binding:'GridBinding', properties : {Title:'' },  events:['OnRowClick'], templateBuilders:['GoogleBarChartBuilder'], parts:['GoogleBarChartColumn']"></div>
+    <div aas-control="name:'GoogleBarChartColumn', isControlPart:true, properties : {Value:null, Label:'' }, events:['OnValueChanged', 'OnPropertyChanged'], templateBuilders:['GoogleBarChartColumnBuilder']"></div>
+
 </body>
 </html>

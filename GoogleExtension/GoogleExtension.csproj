@@ -73,6 +73,7 @@
   <ItemGroup>
     <Content Include="DyGraph.htm" />
     <Content Include="DygraphChartBuilder.js" />
+    <Content Include="GoogleBarChartBuilder.js" />
     <Content Include="GoogleLineChartBuilder.js" />
     <Content Include="GoogleLineChartControl.htm" />
     <Content Include="GoogleMapBuilder.js" />

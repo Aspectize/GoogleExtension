@@ -122,7 +122,7 @@ Global.GoogleTableBuilder = {
 
             data.addRows(rows);
 
-            if (columnsBuilt) {
+            if (columnsBuilt && (data.getNumberOfRows() > 0)) {
 
                 if (controlInfo.DrawGoogleTable) {
 
