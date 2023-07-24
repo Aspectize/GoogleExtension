@@ -743,13 +743,15 @@ Aspectize.Extend("GoogleMapControl", {
             location = new google.maps.LatLng(initLat, initLng);
         }
 
+
         var mapOptions = {
             center: location,
             disableDoubleClickZoom: Aspectize.UiExtensions.GetProperty(control, 'DisableDoubleClickZoom'),
             scrollwheel: Aspectize.UiExtensions.GetProperty(control, 'Scrollwheel'),
             zoom: Aspectize.UiExtensions.GetProperty(control, 'Zoom'),
             disableDefaultUI: Aspectize.UiExtensions.GetProperty(control, 'DisableDefaultUI'),
-            zoomControl: Aspectize.UiExtensions.GetProperty(control, 'EnableZoomControl')
+            zoomControl: Aspectize.UiExtensions.GetProperty(control, 'EnableZoomControl'),
+            styles: styles
         };
 
         var map = new google.maps.Map(control, mapOptions);
@@ -759,23 +761,23 @@ Aspectize.Extend("GoogleMapControl", {
         // Styles de la map
         var styles = [
             {
-                // stylers: [
-                // { hue: "#7e4eA3" },
-                // { saturation: 100 } //-100 N&B
-                // ]
+                featureType: "road", elementType: "geometry",
+                stylers: [ { lightness: 100 }, { visibility: "simplified" } ]
             }, {
-                featureType: "road",
-                elementType: "geometry",
-                stylers: [
-                { lightness: 100 },
-                { visibility: "simplified" }
-                ]
+                featureType: "road", elementType: "labels",
+                stylers: [ { visibility: "on" } ]
             }, {
-                featureType: "road",
-                elementType: "labels",
-                stylers: [
-                { visibility: "on" }
-                ]
+                featureType: "administrative", elementType: "geometry",
+                stylers: [{ "visibility": "off" }]
+            }, {
+                featureType: "poi",
+                stylers: [{ "visibility": "off" }]
+            }, {
+                featureType: "road", elementType: "labels.icon",
+                stylers: [{ "visibility": "off" }]
+            }, {
+                featureType: "transit",
+                stylers: [{ "visibility": "off" }]
             }
         ];
 
