@@ -69,7 +69,13 @@ Aspectize.Extend("GoogleMapPlaceInput", {
                     options.componentRestrictions = { country: rectrictedCountry };
                 }
 
-                if (listener) google.maps.event.removeListener(listener);                
+                if (listener) google.maps.event.removeListener(listener);
+
+                var pacContainer = document.querySelector('.pac-container');
+                if (pacContainer) {
+                    pacContainer.parentNode.removeChild(pacContainer);
+                }
+
             }
 
             autocomplete = options ? new google.maps.places.Autocomplete(elem, options) : new google.maps.places.Autocomplete(elem);
